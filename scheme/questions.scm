@@ -44,17 +44,18 @@
   (define define? (check-special 'define))
   (define quoted? (check-special 'quote))
   (define let? (check-special 'let))
-
+(define (zip pairs)
+  (list (map car pairs) (map cadr pairs)))
   ;; Converts all let special forms in EXPR into equivalent forms using lambda
   (define (let-to-lambda expr)
     (cond ((atom? expr)
             ; BEGIN PROBLEM 17
-            'replace-this-line
+            expr
             ; END PROBLEM 17
             )
       ((quoted? expr)
         ; BEGIN PROBLEM 17
-        'replace-this-line
+        expr
         ; END PROBLEM 17
         )
       ((or (lambda? expr)
@@ -63,19 +64,21 @@
                (params (cadr expr))
                (body (cddr expr)))
           ; BEGIN PROBLEM 17
-          'replace-this-line
+          (cons form (cons (map let-to-lambda params) (map let-to-lambda body)))
           ; END PROBLEM 17
           ))
       ((let? expr)
         (let ((values (cadr expr))
                (body (cddr expr)))
           ; BEGIN PROBLEM 17
-          'replace-this-line
+          (cons (cons 'lambda (cons (car (zip (let-to-lambda values))) ;caculate the value in the body of let
+                                (let-to-lambda body)))  ;inside let part
+                                (cadr (zip (let-to-lambda values))))
           ; END PROBLEM 17
           ))
       (else
         ; BEGIN PROBLEM 17
-        'replace-this-line
+        (map let-to-lambda expr)
         ; END PROBLEM 17
         )))
 

@@ -205,10 +205,6 @@ def do_cond_form(expressions, env):
                 return test
             else:
                 return eval_all(clause.rest, env)
-            # BEGIN PROBLEM 13
-            "*** YOUR CODE HERE ***"
-
-            # END PROBLEM 13
         expressions = expressions.rest
 
 
@@ -259,7 +255,7 @@ def make_let_frame(bindings, env):
     # END PROBLEM 14
     return env.make_child_frame(names, values)
 
-
+#failed
 def do_define_macro(expressions, env):
     """Evaluate a define-macro form.
 
@@ -271,6 +267,16 @@ def do_define_macro(expressions, env):
     """
     # BEGIN PROBLEM OPTIONAL_2
     "*** YOUR CODE HERE ***"
+    validate_form(expressions, 2)
+    name = expressions.first.first
+    formals = expressions.first.rest
+    validate_formals(formals)
+    body = expressions.rest
+    if expressions.rest:
+       env.define(name, MacroProcedure(formals, body, env))
+       return name
+    else:
+        raise SchemeError
     # END PROBLEM OPTIONAL_2
 
 
